@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Christmas Web</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Garland -->
+  <div class="garland" id="garland">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Welcome -->
+  <h1 id="welcomeMessage" class="welcome-text"></h1>
+
+  <!-- Search -->
+  <div class="search-box">
+    <input
+      type="text"
+      placeholder="Search..."
+      onkeydown="handleSearch(event)"
+    >
+  </div>
+
+  <!-- MUSIC RESULT -->
+  <div class="music-result" id="musicResult">
+    <p>🎄 Christmas Songs</p>
+    <button onclick="playMusic()">▶ Play</button>
+    <button onclick="pauseMusic()">⏸ Pause</button>
+
+    <!-- YOUR FILE -->
+    <audio id="christmasAudio">
+      <source src="christmas-songs.mp4" type="audio/mp4">
+    </audio>
+  </div>
+
+  <!-- YouTube window -->
+  <div class="window">
+    <a href="https://www.youtube.com/@SongsAreINfinite" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg">
+    </a>
+  </div>
+
+  <!-- Buttons -->
+  <button class="login-btn" onclick="openLogin()">Login</button>
+  <button class="register-btn" onclick="openRegister()">Register</button>
+  <button id="logoutBtn" onclick="logout()">Logout</button>
+
+  <!-- Tree -->
+  <div class="tree" id="tree">
+    <div class="tree-top"></div>
+    <div class="tree-middle"></div>
+    <div class="tree-bottom"></div>
+    <div class="lights">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span>
+    </div>
+    <div class="trunk"></div>
+  </div>
+
+  <!-- Snow -->
+  <canvas id="snow"></canvas>
+
+  <!-- Login -->
+  <div class="login-popup" id="loginPopup">
+    <h2>Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <label><input type="checkbox" id="stayLogged"> Stay logged in</label>
+    <button onclick="login()">Login</button>
+    <button onclick="closeLogin()">Close</button>
+    <p id="loginMessage"></p>
+  </div>
+
+  <!-- Register -->
+  <div class="login-popup" id="registerPopup">
+    <h2>Register</h2>
+    <input id="newUsername" placeholder="Username">
+    <input id="newPassword" type="password">
+    <button onclick="register()">Register</button>
+    <button onclick="closeRegister()">Close</button>
+    <p id="registerMessage"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

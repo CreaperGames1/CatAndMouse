@@ -1,0 +1,167 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(#001f3f, #87cefa);
+  overflow: hidden;
+  font-family: Arial;
+}
+
+.welcome-text {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  z-index: 10;
+}
+
+.search-box {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.search-box input {
+  width: 260px;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+}
+
+.music-result {
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 15px 25px;
+  border-radius: 20px;
+  display: none;
+  text-align: center;
+}
+
+.music-result button {
+  padding: 8px 18px;
+  margin: 5px;
+  border-radius: 20px;
+  border: none;
+  background: red;
+  color: white;
+  cursor: pointer;
+}
+
+.window {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 120px;
+  height: 120px;
+  background: #9ad;
+  border: 4px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.window img { width: 80px; }
+
+.login-btn, .register-btn, #logoutBtn {
+  position: absolute;
+  left: 20px;
+  padding: 10px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.login-btn { top: 160px; }
+.register-btn { top: 200px; }
+#logoutBtn { top: 240px; display: none; }
+
+.tree {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tree-top, .tree-middle, .tree-bottom {
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 70px solid green;
+}
+
+.tree-middle { margin-top: -30px; }
+.tree-bottom { margin-top: -30px; }
+
+.trunk {
+  width: 30px;
+  height: 40px;
+  background: brown;
+  margin: auto;
+}
+
+.lights {
+  display: none;
+  gap: 10px;
+  justify-content: center;
+}
+
+.lights span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: blink 1.5s infinite alternate;
+  background: yellow;
+}
+
+@keyframes blink {
+  from { opacity: 0.3; }
+  to { opacity: 1; box-shadow: 0 0 10px white; }
+}
+
+.tree.lit { filter: brightness(1.4); }
+
+.garland {
+  position: fixed;
+  top: 60px;
+  width: 100%;
+  display: none;
+  justify-content: space-evenly;
+}
+
+.garland::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 100%;
+  height: 4px;
+  background: #3a2a1a;
+}
+
+.garland span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  animation: blink 1.5s infinite alternate;
+}
+
+#snow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.login-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  display: none;
+}
