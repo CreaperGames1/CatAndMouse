@@ -44,22 +44,6 @@
         .auth-section {
             padding: 60px;
             text-align: center;
-            position: relative;
-        }
-
-        .youtube-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2.5em;
-            text-decoration: none;
-            transition: transform 0.3s;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
-        }
-
-        .youtube-link:hover {
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1));
         }
 
         .auth-section h1 {
@@ -198,27 +182,10 @@
         .shopping-section {
             display: none;
             padding: 40px;
-            position: relative;
         }
 
         .shopping-section.active {
             display: block;
-        }
-
-        .shopping-section .youtube-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2em;
-            text-decoration: none;
-            transition: transform 0.3s;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
-            z-index: 10;
-        }
-
-        .shopping-section .youtube-link:hover {
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1));
         }
 
         .shopping-header {
@@ -574,8 +541,6 @@
     <div class="container">
         <!-- Authentication Section -->
         <div class="auth-section" id="authSection">
-            <a href="https://www.youtube.com/@DevTomasekPlays" target="_blank" class="youtube-link" title="Visit DevTomasekPlays on YouTube">▶️</a>
-            
             <h1>🍭 FoodHub</h1>
             <p>Delicious treats delivered to your door</p>
 
@@ -623,8 +588,6 @@
 
         <!-- Shopping Section -->
         <div class="shopping-section" id="shoppingSection">
-            <a href="https://www.youtube.com/@DevTomasekPlays" target="_blank" class="youtube-link" title="Visit DevTomasekPlays on YouTube">▶️</a>
-            
             <div class="shopping-header">
                 <h2>Welcome, <span id="userName">User</span>!</h2>
                 <div class="user-info">
