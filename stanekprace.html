@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub - Panel zaměstnanců</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff0080 0%, #ff8c00 20%, #40e0d0 40%, #7b68ee 60%, #ff1493 80%, #00ff00 100%);
+            background-size: 400% 400%;
+            animation: rainbowGradient 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes rainbowGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #7b68ee, #ff1493) 1;
+            box-shadow: 0 0 60px rgba(0, 255, 255, 0.5);
+        }
+
+        .header h1 {
+            background: linear-gradient(90deg, #ff0080, #ff8c00, #40e0d0, #7b68ee, #ff1493, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #00ffff;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .orders-section {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.5);
+        }
+
+        .orders-section h2 {
+            background: linear-gradient(90deg, #ff0080, #00ff00, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .order-card {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .order-card.completed {
+            opacity: 0.5;
+            border-color: #666;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            color: #ff00ff;
+            font-weight: 700;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+        }
+
+        .order-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .order-status.pending {
+            background: #ff8c00;
+            color: white;
+        }
+
+        .order-status.completed {
+            background: #00ff00;
+            color: black;
+        }
+
+        .order-info {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .order-items {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .order-item {
+            color: #fff;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-total {
+            color: #ff00ff;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-top: 10px;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+        }
+
+        .calculator-section {
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .calculator-section h2 {
+            background: linear-gradient(90deg, #ff0080, #ff8c00, #40e0d0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .calc-display {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #00ff00;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            min-height: 60px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) inset;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            padding: 20px;
+            font-size: 1.5em;
+            border: 2px solid #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .calc-btn:hover {
+            background: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .calc-btn.operator {
+            background: rgba(255, 0, 255, 0.1);
+            border-color: #ff00ff;
+            color: #ff00ff;
+        }
+
+        .calc-btn.operator:hover {
+            background: rgba(255, 0, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .calc-btn.enter {
+            grid-column: span 4;
+            background: linear-gradient(90deg, #00ff00, #00ffff, #ff00ff);
+            background-size: 200% 200%;
+            animation: rainbowShift 3s ease infinite;
+            color: white;
+            border: none;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+        }
+
+        .calc-btn.enter:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+        }
+
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .active-order-info {
+            background: rgba(255, 140, 0, 0.2);
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #ff8c00;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 60px 20px;
+            color: #00ffff;
+            font-size: 1.3em;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-section {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👨‍🍳 Panel zaměstnanců</h1>
+            <p>Správa objednávek FoodHub</p>
+        </div>
+
+        <div class="main-content">
+            <div class="orders-section">
+                <h2>📋 Objednávky</h2>
+                <div id="ordersList">
+                    <!-- Objednávky se načtou zde -->
+                </div>
+            </div>
+
+            <div class="calculator-section">
+                <h2>🧮 Kalkulačka</h2>
+                <div class="active-order-info" id="activeOrderInfo" style="display: none;">
+                    Vybraná objednávka: <span id="selectedOrderId"></span>
+                </div>
+                <div class="calc-display" id="calcDisplay">0</div>
+                <div class="calc-buttons">
+                    <button class="calc-btn" onclick="appendNumber('7')">7</button>
+                    <button class="calc-btn" onclick="appendNumber('8')">8</button>
+                    <button class="calc-btn" onclick="appendNumber('9')">9</button>
+                    <button class="calc-btn operator" onclick="appendOperator('÷')">÷</button>
+                    
+                    <button class="calc-btn" onclick="appendNumber('4')">4</button>
+                    <button class="calc-btn" onclick="appendNumber('5')">5</button>
+                    <button class="calc-btn" onclick="appendNumber('6')">6</button>
+                    <button class="calc-btn operator" onclick="appendOperator('×')">×</button>
+                    
+                    <button class="calc-btn" onclick="appendNumber('1')">1</button>
+                    <button class="calc-btn" onclick="appendNumber('2')">2</button>
+                    <button class="calc-btn" onclick="appendNumber('3')">3</button>
+                    <button class="calc-btn operator" onclick="appendOperator('-')">-</button>
+                    
+                    <button class="calc-btn" onclick="clearCalc()">C</button>
+                    <button class="calc-btn" onclick="appendNumber('0')">0</button>
+                    <button class="calc-btn" onclick="appendNumber('.')">.</button>
+                    <button class="calc-btn operator" onclick="appendOperator('+')">+</button>
+                    
+                    <button class="calc-btn enter" onclick="completeOrder()">ENTER - Dokončit objednávku</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDisplay = '0';
+        let currentOperation = null;
+        let previousValue = null;
+        let selectedOrderId = null;
+
+        // Načíst objednávky
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('foodhub_orders')) || [];
+            const ordersList = document.getElementById('ordersList');
+
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<div class="no-orders">Zatím žádné objednávky</div>';
+                return;
+            }
+
+            ordersList.innerHTML = '';
+            
+            // Zobrazit nejprve čekající, pak dokončené
+            const sortedOrders = orders.sort((a, b) => {
+                if (a.status === 'čeká' && b.status !== 'čeká') return -1;
+                if (a.status !== 'čeká' && b.status === 'čeká') return 1;
+                return b.id - a.id;
+            });
+
+            sortedOrders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = `order-card ${order.status === 'dokončeno' ? 'completed' : ''}`;
+                orderCard.onclick = () => selectOrder(order.id);
+                
+                let itemsHTML = '';
+                order.items.forEach(item => {
+                    itemsHTML += `<div class="order-item">${item.name} × ${item.quantity} = ${item.price * item.quantity} Kč</div>`;
+                });
+
+                orderCard.innerHTML = `
+                    <div class="order-header">
+                        <div class="order-id">#${order.id}</div>
+                        <div class="order-status ${order.status === 'čeká' ? 'pending' : 'completed'}">
+                            ${order.status === 'čeká' ? 'Čeká' : 'Dokončeno'}
+                        </div>
+                    </div>
+                    <div class="order-info">
+                        👤 Zákazník: ${order.customerName}<br>
+                        📍 Adresa: ${order.address}<br>
+                        🕐 Čas: ${order.timestamp}
+                    </div>
+                    <div class="order-items">
+                        ${itemsHTML}
+                    </div>
+                    <div class="order-total">Celkem: ${order.total} Kč</div>
+                `;
+                
+                ordersList.appendChild(orderCard);
+            });
+        }
+
+        // Vybrat objednávku
+        function selectOrder(orderId) {
+            selectedOrderId = orderId;
+            document.getElementById('selectedOrderId').textContent = '#' + orderId;
+            document.getElementById('activeOrderInfo').style.display = 'block';
+            
+            // Zvýraznit vybranou objednávku
+            document.querySelectorAll('.order-card').forEach(card => {
+                card.style.borderColor = '#00ff00';
+                card.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.3)';
+            });
+            
+            const selectedCard = Array.from(document.querySelectorAll('.order-card')).find(
+                card => card.querySelector('.order-id').textContent === '#' + orderId
+            );
+            
+            if (selectedCard) {
+                selectedCard.style.borderColor = '#ff8c00';
+                selectedCard.style.boxShadow = '0 0 40px rgba(255, 140, 0, 0.8)';
+            }
+        }
+
+        // Kalkulačka funkce
+        function appendNumber(num) {
+            if (currentDisplay === '0') {
+                currentDisplay = num;
+            } else {
+                currentDisplay += num;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            if (previousValue === null) {
+                previousValue = parseFloat(currentDisplay);
+                currentOperation = op;
+                currentDisplay = '0';
+            } else {
+                calculate();
+                currentOperation = op;
+            }
+        }
+
+        function calculate() {
+            if (previousValue === null || currentOperation === null) return;
+
+            const current = parseFloat(currentDisplay);
+            let result;
+
+            switch (currentOperation) {
+                case '+':
+                    result = previousValue + current;
+                    break;
+                case '-':
+                    result = previousValue - current;
+                    break;
+                case '×':
+                    result = previousValue * current;
+                    break;
+                case '÷':
+                    result = previousValue / current;
+                    break;
+            }
+
+            currentDisplay = result.toString();
+            previousValue = null;
+            currentOperation = null;
+            updateDisplay();
+        }
+
+        function clearCalc() {
+            currentDisplay = '0';
+            previousValue = null;
+            currentOperation = null;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('calcDisplay').textContent = currentDisplay;
+        }
+
+        // Dokončit objednávku při zmáčknutí ENTER
+        function completeOrder() {
+            if (!selectedOrderId) {
+                alert('⚠️ Nejprve vyberte objednávku kliknutím na ni!');
+                return;
+            }
+
+            const orders = JSON.parse(localStorage.getItem('foodhub_orders')) || [];
+            const orderIndex = orders.findIndex(o => o.id === selectedOrderId);
+
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = 'dokončeno';
+                localStorage.setItem('foodhub_orders', JSON.stringify(orders));
+                
+                alert(`✅ Objednávka #${selectedOrderId} byla dokončena!`);
+                
+                selectedOrderId = null;
+                document.getElementById('activeOrderInfo').style.display = 'none';
+                clearCalc();
+                loadOrders();
+            }
+        }
+
+        // Klávesnice podpora
+        document.addEventListener('keydown', function(e) {
+            if (e.key >= '0' && e.key <= '9') {
+                appendNumber(e.key);
+            } else if (e.key === '.') {
+                appendNumber('.');
+            } else if (e.key === '+') {
+                appendOperator('+');
+            } else if (e.key === '-') {
+                appendOperator('-');
+            } else if (e.key === '*') {
+                appendOperator('×');
+            } else if (e.key === '/') {
+                e.preventDefault();
+                appendOperator('÷');
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                completeOrder();
+            } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+                clearCalc();
+            }
+        });
+
+        // Automatické obnovování každých 5 sekund
+        setInterval(loadOrders, 5000);
+
+        // Načíst objednávky při načtení stránky
+        loadOrders();
+    </script>
+</body>
+</html>
