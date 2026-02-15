@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipper Zero Hub - Your Hacking Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --secondary: #00FF9F;
+            --dark: #0A0E27;
+            --darker: #050814;
+            --grid: #1a1f3a;
+            --text: #E0E6FF;
+            --highlight: #FFD700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(26, 31, 58, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26, 31, 58, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Glowing orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary), transparent);
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--secondary), transparent);
+            bottom: 20%;
+            right: -10%;
+            animation-delay: 7s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -50px) scale(1.1); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            animation: glitch 5s infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0 5rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6), rgba(10, 14, 39, 0.8));
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.5s; }
+        .card:nth-child(2) { animation-delay: 0.7s; }
+        .card:nth-child(3) { animation-delay: 0.9s; }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .card-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .card-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            opacity: 0.85;
+        }
+
+        .card-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary), #FF8533);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(0, 255, 159, 0.2), rgba(0, 255, 159, 0.1));
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--secondary), #00CC7F);
+            color: var(--dark);
+            box-shadow: 0 10px 30px rgba(0, 255, 159, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(26, 31, 58, 0.8);
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.6;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        /* Scanlines effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .hero-text {
+                font-size: 1.1rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Additional cyber elements */
+        .cyber-corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--secondary);
+            opacity: 0.3;
+        }
+
+        .cyber-corner-tl {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .cyber-corner-tr {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .cyber-corner-bl {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .cyber-corner-br {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">Flipper Zero</h1>
+            <p class="tagline">Hacker's Command Center</p>
+        </header>
+
+        <section class="hero">
+            <p class="hero-text">
+                Welcome to your central hub for Flipper Zero - the portable multi-tool for pentesters and geeks. 
+                Access everything you need to get started, develop custom apps, and keep your device updated.
+            </p>
+        </section>
+
+        <section class="cards-grid">
+            <!-- Buy Flipper Card -->
+            <div class="card">
+                <div class="cyber-corner cyber-corner-tl"></div>
+                <div class="cyber-corner cyber-corner-br"></div>
+                <span class="card-icon">🐬</span>
+                <h2 class="card-title">Get Flipper Zero</h2>
+                <p class="card-description">
+                    Acquire the ultimate portable multi-tool device designed for hackers, makers, and tech enthusiasts.
+                </p>
+                <ul class="card-features">
+                    <li>Sub-1 GHz transceiver (50m range)</li>
+                    <li>125 kHz RFID & NFC support</li>
+                    <li>Infrared transmitter/receiver</li>
+                    <li>Bluetooth LE 5.4</li>
+                    <li>GPIO pins for hardware hacking</li>
+                </ul>
+                <a href="https://flipper.net/" class="btn" target="_blank" rel="noopener noreferrer">
+                    Buy Now
+                </a>
+            </div>
+
+            <!-- Documentation Card -->
+            <div class="card">
+                <div class="cyber-corner cyber-corner-tl"></div>
+                <div class="cyber-corner cyber-corner-br"></div>
+                <span class="card-icon">📚</span>
+                <h2 class="card-title">JS Documentation</h2>
+                <p class="card-description">
+                    Learn to create your first JavaScript application for Flipper Zero with our comprehensive developer guides.
+                </p>
+                <ul class="card-features">
+                    <li>Step-by-step tutorials</li>
+                    <li>Built-in functions reference</li>
+                    <li>CLI development workflow</li>
+                    <li>Code examples & samples</li>
+                    <li>JavaScript SDK integration</li>
+                </ul>
+                <a href="https://developer.flipper.net/flipperzero/doxygen/js_your_first_js_app.html" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                    Read Docs
+                </a>
+            </div>
+
+            <!-- Downloads Card -->
+            <div class="card">
+                <div class="cyber-corner cyber-corner-tl"></div>
+                <div class="cyber-corner cyber-corner-br"></div>
+                <span class="card-icon">⚡</span>
+                <h2 class="card-title">Downloads</h2>
+                <p class="card-description">
+                    Get the latest firmware, mobile apps, and developer tools to unlock your Flipper Zero's full potential.
+                </p>
+                <ul class="card-features">
+                    <li>Firmware updates & qFlipper</li>
+                    <li>Mobile apps (iOS & Android)</li>
+                    <li>Development toolkit (FBT)</li>
+                    <li>Applications SDK (uFBT)</li>
+                    <li>Graphics & brand assets</li>
+                </ul>
+                <a href="https://flipper.net/pages/downloads" class="btn" target="_blank" rel="noopener noreferrer">
+                    Download
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p class="footer-text">Flipper Zero Hub - Unauthorized Access Granted</p>
+            <div class="footer-links">
+                <a href="https://docs.flipper.net" target="_blank" rel="noopener noreferrer">Official Docs</a>
+                <a href="https://github.com/flipperdevices" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://discord.gg/flipper" target="_blank" rel="noopener noreferrer">Discord</a>
+                <a href="https://www.reddit.com/r/flipperzero/" target="_blank" rel="noopener noreferrer">Reddit</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add hover sound effect simulation (visual feedback)
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 20px 60px rgba(255, 107, 0, 0.3)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Parallax effect for orbs on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
